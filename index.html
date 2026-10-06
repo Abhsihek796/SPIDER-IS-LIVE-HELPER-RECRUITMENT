@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>spider is live helper apply</title>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #5865F2;
+            --accent: #00F2FE;
+            --accent-glow: rgba(0, 242, 254, 0.4);
+            --bg-gradient: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #141e30);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.12);
+            --text-main: #FFFFFF;
+            --text-sub: #A3A8B4;
+            --input-bg: rgba(0, 0, 0, 0.35);
+            --gold: #FFD700;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            animation: floatOrb 8s ease-in-out infinite alternate;
+        }
+
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            background: rgba(88, 101, 242, 0.3);
+            top: -50px;
+            left: -50px;
+        }
+
+        .orb-2 {
+            width: 250px;
+            height: 250px;
+            background: rgba(0, 242, 254, 0.25);
+            bottom: -50px;
+            right: -50px;
+            animation-delay: -4s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, 40px) scale(1.1); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 850px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            animation: pulseGlow 3s infinite alternate;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        @keyframes pulseGlow {
+            0% { text-shadow: 0 0 5px rgba(0, 242, 254, 0.2); }
+            100% { text-shadow: 0 0 20px rgba(0, 242, 254, 0.8); }
+        }
+
+        .header h1 i {
+            animation: spinSpider 6s linear infinite;
+        }
+
+        @keyframes spinSpider {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .header p {
+            color: var(--text-sub);
+            font-size: 15px;
+        }
+
+        .section-header {
+            color: var(--gold);
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 25px 0 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .section-header i {
+            transition: transform 0.3s ease;
+        }
+
+        .section-header:hover i {
+            transform: scale(1.3) rotate(10deg);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .form-group:focus-within {
+            transform: translateY(-2px);
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-sub);
+            line-height: 1.4;
+        }
+
+        label span.hinglish {
+            color: var(--accent);
+            display: block;
+            font-size: 12px;
+            font-style: italic;
+            margin-top: 2px;
+        }
+
+        input, select, textarea {
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 14px 16px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        input[type="file"]::file-selector-button {
+            background: var(--primary);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 15px;
+            transition: background 0.3s ease;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: #4752c4;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 18px var(--accent-glow);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        select option {
+            background: #1e1e2f;
+            color: #fff;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .btn-submit {
+            grid-column: span 2;
+            margin-top: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
+            background-size: 200% 100%;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 25px rgba(88, 101, 242, 0.4);
+        }
+
+        .btn-submit:hover {
+            background-position: 100% 0;
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 15px 35px var(--accent-glow);
+        }
+
+        #statusMsg {
+            grid-column: span 2;
+            text-align: center;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @media (max-width: 650px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .full-width, .btn-submit, #statusMsg { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="container">
+    <div class="header">
+        <h1><i class="fa-solid fa-spider"></i> SPIDER IS LIVE — HELPER RECRUITMENT</h1>
+        <p>Fill out the application below / Niche diye gaye form ko bharein</p>
+    </div>
+
+    <form id="appForm" class="form-grid">
+        
+        <!-- PHASE 1 -->
+        <div class="section-header full-width">
+            <i class="fa-solid fa-id-card"></i> Phase 1: Profile & Identity
+        </div>
+
+        <div class="form-group">
+            <label>Discord Username
+                <span class="hinglish">Apna Discord Username likhein</span>
+            </label>
+            <input type="text" id="tag" placeholder="e.g. username" required>
+        </div>
+
+        <div class="form-group">
+            <label>Discord User ID
+                <span class="hinglish">Apna Discord ID daalein</span>
+            </label>
+            <input type="text" id="userId" placeholder="e.g. 8473920184739201" required>
+        </div>
+
+        <div class="form-group">
+            <label>Age
+                <span class="hinglish">Aapki Umar (Age)</span>
+            </label>
+            <input type="number" id="age" min="13" max="99" placeholder="Enter age" required>
+        </div>
+
+        <div class="form-group">
+            <label>Target Track
+                <span class="hinglish">Kis Helper role ke liye apply kar rahe ho?</span>
+            </label>
+            <select id="track" required>
+                <option value="" disabled selected>Select Track</option>
+                <option value="Voice Chat (VC) Helper Track">Voice Chat (VC) Helper Track</option>
+                <option value="General Chat Helper Track">General Chat Helper Track</option>
+            </select>
+        </div>
+
+        <!-- NEW FIELD: AGE VERIFICATION FILE UPLOAD -->
+        <div class="form-group full-width">
+            <label>Age Verification Proof (ID / Student Card / Photo)
+                <span class="hinglish">Age verification ke liye photo ya ID proof attach karein (Image/PDF)</span>
+            </label>
+            <input type="file" id="ageProof" accept="image/*,.pdf" required>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="section-header full-width">
+            <i class="fa-solid fa-clock"></i> Phase 2: Activity & Experience
+        </div>
+
+        <div class="form-group">
+            <label>Timezone
+                <span class="hinglish">Aapka Timezone kya hai?</span>
+            </label>
+            <input type="text" id="timezone" placeholder="e.g. GMT+5:45" required>
+        </div>
+
+        <div class="form-group">
+            <label>Daily Availability
+                <span class="hinglish">Kitne ghante active rahoge daily?</span>
+            </label>
+            <input type="text" id="activity" placeholder="e.g. 2-3 hours daily" required>
+        </div>
+
+        <div class="form-group full-width">
+            <label>Past Helper Experience
+                <span class="hinglish">Pehle kisi server par helper bane ho? Detail likhein.</span>
+            </label>
+            <textarea id="experience" placeholder="Past roles or experience..." required></textarea>
+        </div>
+
+        <div class="form-group full-width">
+            <label>Time & Life Management
+                <span class="hinglish">School/Exams ya busy time ke sath helper duties kaise manage karoge?</span>
+            </label>
+            <textarea id="timeMgmt" placeholder="How do you handle busy times?" required></textarea>
+        </div>
+
+        <!-- PHASE 3 -->
+        <div class="section-header full-width">
+            <i class="fa-solid fa-bolt"></i> Phase 3: Scenarios & Judgment
+        </div>
+
+        <div class="form-group full-width">
+            <label>Chat Chaos Playbook
+                <span class="hinglish">Agar main chat mein full-on chaos mach gaya aur koi senior online nahi hai, toh tumhara next move kya hoga?</span>
+            </label>
+            <textarea id="scenario1" placeholder="Your action plan..." required></textarea>
+        </div>
+
+        <div class="form-group full-width">
+            <label>Friend Rule-Breaking
+                <span class="hinglish">Agar koi tumhara close online friend hi server ke rules todne lage, toh tum bina bias ke use kaise handle karoge?</span>
+            </label>
+            <textarea id="scenario2" placeholder="How do you handle friends?" required></textarea>
+        </div>
+
+        <div class="form-group full-width">
+            <label>Voice Chat Disruption
+                <span class="hinglish">Imagine karo, ek bhare hue Voice Chat mein koi achanak ear-rape ya soundboard spam karne lage, toh tum turant kya action loge?</span>
+            </label>
+            <textarea id="scenarioVC" placeholder="VC action plan..." required></textarea>
+        </div>
+
+        <div class="form-group full-width">
+            <label>Member Arguments
+                <span class="hinglish">Jab do active members public chat mein aapas mein bhid jayein, toh maamla shant karane ke liye tum step-in kaise karoge?</span>
+            </label>
+            <textarea id="scenarioArgue" placeholder="De-escalation strategy..." required></textarea>
+        </div>
+
+        <div class="form-group full-width">
+            <label>Unknown Information
+                <span class="hinglish">Agar koi member aisi cheez pooch le jiske baare mein tumhe zero idea ho, toh tum wahan kya step loge?</span>
+            </label>
+            <textarea id="scenarioUnknown" placeholder="What do you do when you don't know?" required></textarea>
+        </div>
+
+        <div class="form-group full-width">
+            <label>Toxic Targeting
+                <span class="hinglish">Warning dene ke baad agar koi member ulta tum par hi attack karne lage ya toxic ho jaye, toh tum apna calm kaise maintain karoge?</span>
+            </label>
+            <textarea id="scenarioToxic" placeholder="Staying calm strategy..." required></textarea>
+        </div>
+
+        <div class="form-group full-width">
+            <label>DM Appeals
+                <span class="hinglish">Jab DMs mein log ye bolkar spam karein ki unka ban ya mute ghalat tha, toh tum us pressure ko kaise handle karoge?</span>
+            </label>
+            <textarea id="scenarioDM" placeholder="DM management..." required></textarea>
+        </div>
+
+        <div class="form-group full-width">
+            <label>Daily Vibe & Habits
+                <span class="hinglish">Server ko dead hone se bachane aur active vibe rakhne ke liye tum daily kya efforts karoge?</span>
+            </label>
+            <textarea id="scenarioHabits" placeholder="Daily engagement ideas..." required></textarea>
+        </div>
+
+        <div class="form-group full-width">
+            <label>Final Pitch
+                <span class="hinglish">Apna best pitch do—management tumhe hi kyun choose kare, aisi kya special baat hai tum mein?</span>
+            </label>
+            <textarea id="whyMe" placeholder="Your pitch..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+            <i class="fa-solid fa-paper-plane"></i> Submit Helper Application
+        </button>
+
+        <div id="statusMsg"></div>
+    </form>
+</div>
+
+<script>
+    document.getElementById('appForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const submitBtn = document.getElementById('submitBtn');
+        const statusMsg = document.getElementById('statusMsg');
+        const webhookUrl = "https://discord.com/api/webhooks/1536250737292746802/uJ5jL40ucLtDlqNzueW2xEJZN9KIJMRVpSkY5R2dN7kjqPodFE12UdkftS3dfZL7Z1Il";
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Transmitting...';
+
+        const fileInput = document.getElementById('ageProof');
+        const proofFile = fileInput.files[0];
+
+        // Construct Embed Payload
+        const embedPayload = {
+            username: "spider is live helper recruitment",
+            embeds: [
+                {
+                    title: "🕷️ SPIDER IS LIVE — HELPER APP",
+                    color: 65534,
+                    fields: [
+                        { name: "👤 User Tag", value: document.getElementById('tag').value, inline: true },
+                        { name: "🆔 User ID", value: document.getElementById('userId').value, inline: true },
+                        { name: "🎂 Age", value: document.getElementById('age').value, inline: true },
+                        { name: "⚡ Helper Track", value: document.getElementById('track').value, inline: true },
+                        { name: "🌍 Timezone", value: document.getElementById('timezone').value, inline: true },
+                        { name: "📅 Daily Active", value: document.getElementById('activity').value, inline: true },
+                        { name: "💼 Prior Experience", value: document.getElementById('experience').value },
+                        { name: "⏳ Time Management", value: document.getElementById('timeMgmt').value },
+                        { name: "🚨 Chat Chaos Plan", value: document.getElementById('scenario1').value },
+                        { name: "👥 Friend Rule-Breaking", value: document.getElementById('scenario2').value },
+                        { name: "🎙️ VC Disruption", value: document.getElementById('scenarioVC').value },
+                        { name: "⚔️ Member Fights", value: document.getElementById('scenarioArgue').value },
+                        { name: "❓ Unknown Info", value: document.getElementById('scenarioUnknown').value },
+                        { name: "🔥 Toxic Attacks", value: document.getElementById('scenarioToxic').value },
+                        { name: "📩 DM Pressure", value: document.getElementById('scenarioDM').value },
+                        { name: "💬 Daily Active Vibe", value: document.getElementById('scenarioHabits').value },
+                        { name: "🌟 Final Pitch", value: document.getElementById('whyMe').value }
+                    ],
+                    timestamp: new Date().toISOString()
+                }
+            ]
+        };
+
+        // If a proof image is attached, show it inside the embed as an image attachment preview
+        if (proofFile && proofFile.type.startsWith('image/')) {
+            embedPayload.embeds[0].image = { url: "attachment://" + proofFile.name };
+        }
+
+        // Use FormData to send both json structure and file attachments to Discord
+        const formData = new FormData();
+        formData.append('payload_json', JSON.stringify(embedPayload));
+        if (proofFile) {
+            formData.append('file', proofFile, proofFile.name);
+        }
+
+        fetch(webhookUrl, {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => {
+            if (res.ok) {
+                statusMsg.style.display = 'block';
+                statusMsg.style.background = 'rgba(67, 181, 129, 0.25)';
+                statusMsg.style.color = '#43b581';
+                statusMsg.style.border = '1px solid #43b581';
+                statusMsg.innerText = 'Application submitted successfully to Discord!';
+                document.getElementById('appForm').reset();
+            } else {
+                throw new Error('Webhook error');
+            }
+        })
+        .catch(err => {
+            statusMsg.style.display = 'block';
+            statusMsg.style.background = 'rgba(240, 71, 71, 0.25)';
+            statusMsg.style.color = '#f04747';
+            statusMsg.style.border = '1px solid #f04747';
+            statusMsg.innerText = 'Failed to submit. Please try again.';
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Helper Application';
+        });
+    });
+</script>
+
+</body>
+</html>
